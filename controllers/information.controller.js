@@ -1,4 +1,4 @@
-import Information from "../models/Information";
+import Information from "../models/Information.js";
 
 export const getAllInformation = async (req, res) => {
     try {
@@ -9,10 +9,10 @@ export const getAllInformation = async (req, res) => {
     }
 }
 
-export const getInformationByTitle = async (req, res) => {
-    const { title } = req.params;
+export const getInformationById= async (req, res) => {
+    const { id } = req.params;
     try {
-        const information = await Information.findOne({ tittle: title });
+        const information = await Information.findById(id);
         if (!information) {
             return res.status(404).json({ message: "Information not found" });
         }

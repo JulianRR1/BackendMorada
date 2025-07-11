@@ -1,4 +1,4 @@
-import LineLSM from "../models/LineLSM.JS";
+import LineLSM from "../models/LineLSM.js";
 
 export const getAllLines = async (req, res) => {
     try {
@@ -9,13 +9,17 @@ export const getAllLines = async (req, res) => {
     }
 }
 
-export const getAllByStateMunicipality = async (req, res) => {
-    const { state, municipality } = req.params;
+export const getByName = async (req, res) => {
+    const name = req.params.name;
     try {
         const filter = {};
-        if (state) filter.state = state;
-        if (municipality) filter.municipality = municipality;
+        if (name) {
+            filter.name = { $regex: name, $options: 'i' };
+        }
         const lines = await LineLSM.find(filter);
+        if (lines.length === 0) {
+            return res.status(404).json({ message: "No se encontro ninguna linea con ese nombre" }); 
+        }
         res.status(200).json(lines);
     } catch (error) {
         res.status(500).json({ message: error.message });

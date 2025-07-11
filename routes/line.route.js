@@ -1,9 +1,9 @@
 import express from "express";
-import { getAllLines, getAllByStateMunicipality, createLine, updateLine, deleteLine } from "../controllers/line.controller";
+import { getAllLines, getByName, createLine, updateLine, deleteLine } from "../controllers/line.controller.js";
 const router = express.Router();
 
 router.get("/", getAllLines);
-router.get("/:state/:municipality", getAllByStateMunicipality);
+router.get("/:name", getByName);
 router.post("/", createLine);
 router.put("/:id", updateLine);
 router.delete("/:id", deleteLine);

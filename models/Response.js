@@ -2,8 +2,16 @@ import mongoose from "mongoose";
 
 const ResponseSchema = new mongoose.Schema({
     part: String,
-    phase: String,
-    question: String,
+    response: String,
+    level: 
+    {
+        type: String,
+        enum: ['baja', 'media', 'alta']
+    },
+    type: {
+        type: String,
+        enum: ['prevencion', 'accion']
+    }
 }, { timestamps: true });
 
 const Response = mongoose.model("Response", ResponseSchema);

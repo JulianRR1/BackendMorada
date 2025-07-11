@@ -1,9 +1,9 @@
 import express from "express";
-import { getAllInformation, getInformationByTitle, createInformation, updateInformation, deleteInformation } from "../controllers/information.controller.js";
+import { getAllInformation, getInformationById, createInformation, updateInformation, deleteInformation } from "../controllers/information.controller.js";
 const router = express.Router();
 
 router.get("/", getAllInformation);
-router.get("/:title", getInformationByTitle);
+router.get("/:id", getInformationById);
 router.post("/", createInformation);
 router.put("/:id", updateInformation);
 router.delete("/:id", deleteInformation);

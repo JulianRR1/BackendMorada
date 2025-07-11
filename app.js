@@ -16,11 +16,9 @@ import informationRoutes from './routes/information.route.js';
 import instanceRoutes from './routes/instance.route.js';
 import lineRoutes from './routes/line.route.js';
 import responseRoutes from './routes/response.route.js';
-import serviceRoutes from './routes/service.route.js';
 import surveyRoutes from './routes/survey.route.js';
 
 app.use('/api/intance', instanceRoutes);
-app.use('/api/service', serviceRoutes);
 app.use('/api/emergency', emergencyRoutes);
 app.use('/api/line', lineRoutes);
 app.use('/api/information', informationRoutes);

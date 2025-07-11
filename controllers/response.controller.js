@@ -9,13 +9,10 @@ export const getAllResponses = async (req, res) => {
     }
 } 
 
-export const getAllByPartPhase = async (req, res) => {
-    const { part, phase } = req.params;
+export const getResponseById= async (req, res) => {
+    const { id } = req.params;
     try {
-        const filter = {};
-        if (part) filter.part = part;
-        if (phase) filter.phase = phase;
-        const responses = await Response.find(filter);
+        const responses = await Response.findById(id);
         res.status(200).json(responses);
     } catch (error) {
         res.status(500).json({ message: error.message });

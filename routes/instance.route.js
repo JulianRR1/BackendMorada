@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllInstances, getInstanceById, getInformationByStateMunicipality, createInstance, updateInstance, deleteInstance } from "../controllers/instance.controller";
+import { getAllInstances, getInstanceById, getInformationByStateMunicipality, createInstance, updateInstance, deleteInstance } from "../controllers/instance.controller.js";
 const router = express.Router();
 
 router.get("/", getAllInstances);

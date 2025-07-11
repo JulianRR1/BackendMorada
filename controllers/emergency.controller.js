@@ -1,4 +1,4 @@
-import Emergency from "../models/Emergency";
+import Emergency from "../models/Emergency.js";
 
 export const getAllEmergency = async (req, res) => {
     try {
@@ -32,10 +32,10 @@ export const createEmergency = async (req, res) => {
     }
 }
 
-export const updateEmergency = async (req, res) => {
+export const  updateEmergency = async (req, res) => {
     const { id } = req.params;
     try {
-        const updatedEmergency = await Emergency.findByIdAnd(id, req.body, { new: true });
+        const updatedEmergency = await Emergency.findByIdAndUpdate(id, req.body, { new: true });
         if (!updatedEmergency) {
             return res.status(404).json({ message: "Emergency not found" });
         }

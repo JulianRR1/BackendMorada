@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllEmergency, getByEstadoMunicipio, getByEstadoMunicipio, createEmergency, updateEmergency, deleteEmergency } from "../controllers/emergency.controller";
+import { getAllEmergency, getByEstadoMunicipio, createEmergency, updateEmergency, deleteEmergency } from "../controllers/emergency.controller.js";
 const router = express.Router();
 
 router.get("/", getAllEmergency);

@@ -8,6 +8,10 @@ const InstanceSchema = new mongoose.Schema({
         address: String,
     },
     hours: String,
+    type: {
+        type: String,
+        enum: ['atencion a la violencia', 'apoyo a personas con discapacidad']
+    },
     services : [ mongoose.Schema.Types.Mixed ],
     state: String,
     municipality: String
