@@ -5,6 +5,9 @@ import connectDB from './config/db.js';
 
 dotenv.config();
 connectDB();
+console.log("📡 Intentando conectar a Mongo...");
+await connectDB();
+
 
 const app = express();
 app.use(cors());
