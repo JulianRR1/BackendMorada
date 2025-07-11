@@ -1,15 +1,13 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
 
-dotenv.config();
+import mongoose from 'mongoose';
 
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
     console.log('✅ Conectado a MongoDB');
   } catch (error) {
-    console.error('❌ Error de conexión:', error.message);
-    process.exit(1);
+    console.error('❌ Error de conexión a MongoDB:', error.message);
+    // No mates el proceso aún, deja que Railway lo registre
   }
 };
 

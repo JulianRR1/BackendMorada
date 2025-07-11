@@ -5,8 +5,6 @@ import connectDB from './config/db.js';
 
 dotenv.config();
 connectDB();
-console.log("📡 Intentando conectar a Mongo...");
-await connectDB();
 
 
 const app = express();
@@ -28,7 +26,7 @@ app.use('/api/information', informationRoutes);
 app.use('/api/survey', surveyRoutes);
 app.use('/api/response', responseRoutes);
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
