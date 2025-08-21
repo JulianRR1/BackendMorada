@@ -2,7 +2,7 @@ import Instance from "../models/Instance.js";
 
 export const getAllInstances = async (req, res) => {
     try {
-        const instances = await Instance.find();
+        const instances = await Instance.find().lean();
         res.status(200).json(instances);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -12,7 +12,7 @@ export const getAllInstances = async (req, res) => {
 export const getInstanceById = async (req, res) => {
     const { id } = req.params;
     try {
-        const instance = await Instance.findById(id);
+        const instance = await Instance.findById(id).lean();
         if (!instance) {
             return res.status(404).json({ message: "Instance not found" });
         }

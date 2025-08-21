@@ -1,22 +1,24 @@
 import Information from "../models/Information.js";
+import { decorateInformationDoc } from "../utils/media.util.js";
 
 export const getAllInformation = async (req, res) => {
     try {
-        const information = await Information.find();
-        res.status(200).json(information);
+        const list = await Information.find().lean();
+        const decorated = list.map(decorateInformationDoc);
+        res.status(200).json(decorated);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 }
 
-export const getInformationById= async (req, res) => {
+export const getInformationById = async (req, res) => {
     const { id } = req.params;
     try {
-        const information = await Information.findById(id);
+        const information = await Information.findById(id).lean();
         if (!information) {
             return res.status(404).json({ message: "Information not found" });
         }
-        res.status(200).json(information);
+        res.status(200).json(decorateInformationDoc(information));
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -24,9 +26,9 @@ export const getInformationById= async (req, res) => {
 
 export const createInformation = async (req, res) => {
     try {
-        const information = new Information(req.body);
-        const savedInformation = await information.save();
-        res.status(201).json(savedInformation);
+        const info = new Information(req.body);
+        const saved = await info.save();
+        res.status(201).json(decorateInformationDoc(saved));
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -35,11 +37,11 @@ export const createInformation = async (req, res) => {
 export const updateInformation = async (req, res) => {
     const { id } = req.params;
     try {
-        const updatedInformation = await Information.findByIdAndUpdate(id, req.body, { new: true });
-        if (!updatedInformation) {
+        const updated = await Information.findByIdAndUpdate(id, req.body , { new: true, runValidators: true });
+        if (!updated) {
             return res.status(404).json({ message: "Information not found" });
         }
-        res.status(200).json(updatedInformation);
+        res.status(200).json(decorateInformationDoc(updated));
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -48,8 +50,8 @@ export const updateInformation = async (req, res) => {
 export const deleteInformation = async (req, res) => {
     const { id } = req.params;
     try {
-        const deletedInformation = await Information.findByIdAndDelete(id);
-        if (!deletedInformation) {
+        const deleted = await Information.findByIdAndDelete(id);
+        if (!deleted) {
             return res.status(404).json({ message: "Information not found" });
         }
         res.status(200).json({ message: "Information deleted successfully" });
