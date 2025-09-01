@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from "./doc/swagger.json" with { type: "json" };
 
 dotenv.config();
 connectDB();
@@ -23,7 +25,7 @@ import authRoutes from './routes/auth.routes.js';
 import mediaRoutes from './routes/media.routes.js';
 
 
-app.use('/api/intance', instanceRoutes);
+app.use('/api/instance', instanceRoutes);
 app.use('/api/emergency', emergencyRoutes);
 app.use('/api/line', lineRoutes);
 app.use('/api/information', informationRoutes);
@@ -31,6 +33,9 @@ app.use('/api/survey', surveyRoutes);
 app.use('/api/response', responseRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/media', mediaRoutes);
+
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.get('/docs.json', (req, res) => res.json(swaggerDocument));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
