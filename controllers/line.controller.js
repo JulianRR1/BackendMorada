@@ -2,7 +2,7 @@ import LineLSM from "../models/LineLSM.js";
 
 export const getAllLines = async (req, res) => {
     try {
-        const lines = await LineLSM.find();
+        const lines = await LineLSM.find().lean();
         res.status(200).json(lines);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -16,7 +16,7 @@ export const getByName = async (req, res) => {
         if (name) {
             filter.name = { $regex: name, $options: 'i' };
         }
-        const lines = await LineLSM.find(filter);
+        const lines = await LineLSM.find(filter).lean();
         if (lines.length === 0) {
             return res.status(404).json({ message: "No se encontro ninguna linea con ese nombre" }); 
         }
@@ -39,7 +39,7 @@ export const createLine = async (req, res) => {
 export const updateLine = async (req, res) => {
     const { id } = req.params;
     try {
-        const updatedLine = await LineLSM.findByIdAndUpdate(id, req.body, { new: true });
+        const updatedLine = await LineLSM.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
         if (!updatedLine) {
             return res.status(404).json({ message: "Line not found" });
         }

@@ -5,27 +5,22 @@ import bcrypt from "bcryptjs"; // Si tus contraseñas están hasheadas
 
 export const loginAdmin = async (req, res) => {
   const { email, password } = req.body;
+  const emailNorm = (email || "").trim().toLowerCase();
 
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: emailNorm }).select("+password role");
 
-    console.log("Usuario encontrado:", user);
-
-    if (!user || user.rol !== "ADMIN") {
+    if (!user || user.role !== "ADMIN") {
       return res.status(401).json({ message: "Usuario no autorizado" });
     }
 
     const passwordValid = await bcrypt.compare(password, user.password); // Si usas bcrypt
-    console.log("Contraseña ingresada:", password);
-    console.log("Contraseña hasheada:", user.password);
-
-    console.log("Contraseña válida:", passwordValid);
     if (!passwordValid) {
       return res.status(401).json({ message: "Credenciales inválidas" });
     }
 
     const token = jwt.sign(
-      { id: user._id, correo: user.correo, rol: user.rol },
+      { id: user._id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
@@ -38,11 +33,13 @@ export const loginAdmin = async (req, res) => {
 };
 
 export const registerUser = async (req, res) => {
-  const { name, email, password, rol } = req.body;
+  const { name, email, password, rol, role } = req.body;
+  const emailNorm = (email || "").trim().toLowerCase();
+  const roleFinal = (role || rol || "USER").toUpperCase();
 
   try {
     // Verifica si ya existe el correo
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ email: emailNorm });
     if (userExists) {
       return res.status(400).json({ message: "El correo ya está registrado." });
     }
@@ -53,9 +50,9 @@ export const registerUser = async (req, res) => {
     // Crea nuevo usuario
     const newUser = new User({
       name,
-      email,
+      email: emailNorm,
       password: hashedPassword,
-      rol: rol || "USER" // Por defecto USER
+      role: roleFinal // Por defecto USER
     });
 
     await newUser.save();
