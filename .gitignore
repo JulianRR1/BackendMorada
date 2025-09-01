@@ -1,1 +1,31 @@
+# deps
 node_modules/
+
+# env & secrets
+.env
+.env.*
+*.pem
+*.key
+*.crt
+*.p12
+*.jks
+*.pfx
+**/*service-account*.json
+utils/proxy-*.json
+.npmrc
+
+# generated
+doc/swagger.json
+coverage/
+.nyc_output/
+*.log
+dist/
+build/
+.cache/
+tmp/
+
+# OS/Editor
+.DS_Store
+.vscode/
+.idea/
+*.swp
