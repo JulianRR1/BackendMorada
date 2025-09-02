@@ -1,5 +1,4 @@
-import jwt from "jsonwebtoken";
-
+/* #swagger.ignore = true */
 const MEDIA_BASE_PATH = process.env.MEDIA_BASE_PATH || ""
 
 /** Extrae fileId de varios formatos de URL de Drive */
@@ -23,10 +22,12 @@ export function extractDriveFileId(rawUrl = "") {
   }
 }
 
+const DRIVE_SEG = '/media/' + 'drive/';
+
 function isAlreadyProxied(url = "") {
   try {
     // Acepta tanto con prefijo configurado como sin él
-    return url.startsWith(`${MEDIA_BASE_PATH}/media/drive/`) || url.startsWith(`/media/drive/`);
+    return url.startsWith(`${MEDIA_BASE_PATH}${DRIVE_SEG}`) || url.startsWith(DRIVE_SEG);
   } catch {
     return false;
   }
@@ -37,7 +38,7 @@ export function toProxyUrl(originalUrl) {
   if (isAlreadyProxied(originalUrl)) return originalUrl; // idempotencia
 
   const fileId = extractDriveFileId(originalUrl);
-  return fileId ? `${MEDIA_BASE_PATH}/media/drive/${fileId}` : originalUrl;
+  return fileId ? `${MEDIA_BASE_PATH}${DRIVE_SEG}${fileId}` : originalUrl;
 }
 
 /** Information: reescribe en raíz + secciones */

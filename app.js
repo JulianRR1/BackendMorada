@@ -34,8 +34,8 @@ app.use('/api/response', responseRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/media', mediaRoutes);
 
-app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.get('/docs.json', (req, res) => res.json(swaggerDocument));
+app.use('/doc',  /* #swagger.ignore = true */ swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.get('/docs.json',  /* #swagger.ignore = true */ (req, res) => res.json(swaggerDocument));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
