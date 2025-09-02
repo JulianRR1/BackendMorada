@@ -8,24 +8,7 @@ const auth = new google.auth.GoogleAuth({
 });
 const drive = google.drive({ version: "v3", auth });
 
-/*
-const auth = new google.auth.GoogleAuth({
-  credentials: {
-    client_email: process.env.GCP_CLIENT_EMAIL,
-    private_key: process.env.GCP_PRIVATE_KEY?.replace(/\\n/g, "\n"), // <- importante
-  },
-  scopes: ["https://www.googleapis.com/auth/drive.readonly"],
-});
 
-const drive = google.drive({ version: "v3", auth });
-*/
-
-/**
- * GET /media/drive/:fileId  (PÚBLICO)
- * - Proxy a Google Drive con alt=media
- * - Soporta Range: bytes=...
- * - Envía Cache-Control y ETag
- */
 export async function getDriveMedia(req, res) {
   const { fileId } = req.params;
   const range = req.headers.range;

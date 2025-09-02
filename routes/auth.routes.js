@@ -5,8 +5,6 @@ const router = express.Router();
 /* #swagger.tags = [{ name: 'Auth', description: 'Autenticación y registro dentro del dashboard ADMIN' }] */
 /* #swagger.path = '/auth' */
 
-
-
 router.post(
     "/admin/login",
     /* #swagger.tags = ['Auth'] */

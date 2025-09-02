@@ -6,27 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outputFile = path.resolve(__dirname, "./swagger.json"); // ✅ doc/swagger.json
 const endpointsFiles = [
     path.resolve(__dirname, '../app.js'),
-    /*path.resolve(__dirname, "../routes/auth.routes.js"),
-    path.resolve(__dirname, "../routes/emergency.route.js"),
-    path.resolve(__dirname, "../routes/information.route.js"),
-    path.resolve(__dirname, "../routes/instance.route.js"),
-    path.resolve(__dirname, "../routes/line.route.js"),
-    path.resolve(__dirname, "../routes/media.routes.js"),
-    path.resolve(__dirname, "../routes/response.route.js"),
-    path.resolve(__dirname, "../routes/survey.route.js"),*/
 ];
-
-/*const outputFile = './swagger.json';
-const endpointsFiles = [
-    './routes/auth.routes.js',
-    './routes/emergency.route.js',
-    './routes/information.route.js',
-    './routes/instance.route.js',
-    './routes/line.route.js',
-    './routes/media.routes.js',
-    './routes/response.route.js',
-    './routes/survey.route.js'
-];*/
 
 const doc = {
     info: {
@@ -34,7 +14,7 @@ const doc = {
         title: 'App Morada API',
         description: 'API para contenido informativo, emergencias y streaming de medios vía proxy.\n' +
             '• /information devuelve URLs proxied.\n' +
-            '• /media/drive/{fileId} sirve el binario desde Drive.',
+            '• El endpoint de medios sirve el binario desde Drive.',
     },
     servers: [
         { url: 'http://localhost:3000', description: 'Dev' },

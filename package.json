@@ -10,7 +10,7 @@
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prestart": "node doc/swagger.js",
-    "dev": "npm run swagger && node app.js"
+    "dev": "node doc/swagger.js && node app.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
