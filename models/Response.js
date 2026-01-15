@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
+import { urlOrInternal } from "../validators/urlOrInternal.js";
 
 const urlRegex = /^https?:\/\/.+/i;
+const urlOrInternalRegex = /^(https?:\/\/.+|\/api\/media\/[a-z]+\/[A-Za-z0-9_\-]+)$/i;
 
 const ResponseSchema = new mongoose.Schema({
     phase: { type: String, required: true, trim: true },
@@ -22,7 +24,8 @@ const ResponseSchema = new mongoose.Schema({
         type: String, // ej. "https://www.youtube.com/watch?v=example"
         trim: true,
         required: false,
-        match: [urlRegex, "URL de un video inválida"]
+        match: [urlOrInternalRegex, "URL de un video inválida"],
+        validate: urlOrInternal
     },
     videoAlt: { type: String, required: false, trim: true },
 }, { timestamps: true });

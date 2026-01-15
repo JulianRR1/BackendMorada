@@ -41,20 +41,24 @@ export function toProxyUrl(originalUrl) {
   return fileId ? `${MEDIA_BASE_PATH}${DRIVE_SEG}${fileId}` : originalUrl;
 }
 
+function isProxied(u) {
+  return typeof u === "string" && (u.startsWith("/api/media/") || u.includes("/api/media/"));
+}
+
 /** Information: reescribe en raíz + secciones */
 export function decorateInformationDoc(doc) {
   if (!doc) return doc;
   const d = doc.toObject ? doc.toObject() : { ...doc };
 
-  if (d.imageUrl) d.imageUrl = toProxyUrl(d.imageUrl);
-  if (d.fileUrl) d.fileUrl = toProxyUrl(d.fileUrl);
-  if (d.videoUrl) d.videoUrl = toProxyUrl(d.videoUrl);
+  if (d.imageUrl && !isProxied(d.imageUrl)) d.imageUrl = toProxyUrl(d.imageUrl);
+  if (d.fileUrl && !isProxied(d.fileUrl)) d.fileUrl = toProxyUrl(d.fileUrl);
+  if (d.videoUrl && !isProxied(d.videoUrl)) d.videoUrl = toProxyUrl(d.videoUrl);
 
   if (Array.isArray(d.description)) {
     d.description = d.description.map((sec) => {
       const s = { ...sec };
-      if (s.imageUrl) s.imageUrl = toProxyUrl(s.imageUrl);
-      if (s.videoUrl) s.videoUrl = toProxyUrl(s.videoUrl);
+      if (s.imageUrl && !isProxied(s.imageUrl)) s.imageUrl = toProxyUrl(s.imageUrl);
+      if (s.videoUrl && !isProxied(s.videoUrl)) s.videoUrl = toProxyUrl(s.videoUrl);
       return s;
     });
   }
@@ -65,14 +69,14 @@ export function decorateInformationDoc(doc) {
 export function decorateResponseDoc(doc) {
   if (!doc) return doc;
   const d = doc.toObject ? doc.toObject() : { ...doc };
-  if (d.videoUrl) d.videoUrl = toProxyUrl(d.videoUrl);
+  if (d.videoUrl && !isProxied(d.videoUrl)) d.videoUrl = toProxyUrl(d.videoUrl);
   return d;
 }
 
 export function decorateSurveyDoc(doc) {
   if (!doc) return doc;
   const d = doc.toObject ? doc.toObject() : { ...doc };
-  if (d.videoUrl) d.videoUrl = toProxyUrl(d.videoUrl);
+  if (d.videoUrl && !isProxied(d.videoUrl)) d.videoUrl = toProxyUrl(d.videoUrl);
   return d;
 }
 

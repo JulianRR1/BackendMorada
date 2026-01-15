@@ -17,7 +17,7 @@ const doc = {
             '• El endpoint de medios sirve el binario desde Drive.',
     },
     servers: [
-        { url: 'http://localhost:3000', description: 'Dev' },
+        { url: 'https://nodejs-production-50e7.up.railway.app/', description: 'Dev' },
     ],
     components: {
         securitySchemes: {
@@ -31,7 +31,7 @@ const doc = {
                 emergencyType: "apoyo policial"
             },
             Information: {
-                tittle: "Preparación para sismos",
+                title: "Preparación para sismos",
                 description: [
                     {
                         subtitle: "Antes de un sismo",

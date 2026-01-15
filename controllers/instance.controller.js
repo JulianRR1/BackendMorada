@@ -20,7 +20,7 @@ export const getInstanceById = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-}   
+}
 
 export const getInformationByStateMunicipality = async (req, res) => {
     const { state, municipality } = req.params;

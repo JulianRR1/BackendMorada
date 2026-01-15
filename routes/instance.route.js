@@ -1,4 +1,5 @@
 import express from "express";
+import mongoose from "mongoose";
 import { getAllInstances, getInstanceById, getInformationByStateMunicipality, createInstance, updateInstance, deleteInstance } from "../controllers/instance.controller.js";
 const router = express.Router();
 import { verifyToken } from "../middleware/auth.js"; // Ensure to import the verifyToken middleware
@@ -28,6 +29,13 @@ router.get(
 */
 router.get(
     "/:id",
+    // Middleware to check if id is valid ObjectId. If not, pass to next route (e.g. state)
+    (req, res, next) => {
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return next('route');
+        }
+        next();
+    },
     /* #swagger.tags = ['Instance'] */
     /* #swagger.summary = 'Obtener instancia por ID' */
     /* #swagger.description = 'Endpoint para obtener una instancia específica mediante su ID.' */
@@ -68,11 +76,29 @@ router.get(
 );
 
 /*
+ * GET /instance/{state}
+*/
+router.get(
+    "/:state",
+    /* #swagger.tags = ['Instance'] */
+    /* #swagger.summary = 'Obtener instancias por estado' */
+    /* #swagger.description = 'Endpoint para obtener instancias filtradas solo por estado.' */
+    /* #swagger.responses[200] = {
+            description: 'OK',
+            content: { 'application/json': {
+                schema: { type: 'array', items: { $ref: '#/components/schemas/Instance' } }
+            } }
+        } */
+    /* #swagger.responses[500] = { description: 'Error interno' } */
+    getInformationByStateMunicipality
+);
+
+/*
  * POST /instance
 */
 router.post(
-    "/", 
-    verifyToken, 
+    "/",
+    verifyToken,
     /* #swagger.tags = ['Instance'] */
     /* #swagger.summary = 'Crear una nueva instancia' */
     /* #swagger.description = 'Endpoint para crear una nueva instancia. Requiere autenticación.' */
@@ -96,7 +122,7 @@ router.post(
  * PUT /instance/{id}
 */
 router.put(
-    "/:id", 
+    "/:id",
     verifyToken,
     /* #swagger.tags = ['Instance'] */
     /* #swagger.summary = 'Actualizar una instancia por ID' */
@@ -117,14 +143,14 @@ router.put(
         } */
     /* #swagger.responses[400] = { description: 'Solicitud inválida' } */
     /* #swagger.responses[404] = { description: 'Instancia no encontrada' } */
-    /* #swagger.responses[500] = { description: 'Error en el servidor' } */ 
+    /* #swagger.responses[500] = { description: 'Error en el servidor' } */
     updateInstance);
 
 /*
  * DELETE /instance/{id}
 */
 router.delete(
-    "/:id", 
+    "/:id",
     verifyToken,
     /* #swagger.tags = ['Instance'] */
     /* #swagger.summary = 'Eliminar una instancia por ID' */
@@ -135,7 +161,7 @@ router.delete(
         } */
     /* #swagger.responses[200] = { description: 'Instancia eliminada exitosamente' } */
     /* #swagger.responses[404] = { description: 'Instancia no encontrada' } */
-    /* #swagger.responses[500] = { description: 'Error en el servidor' } */ 
+    /* #swagger.responses[500] = { description: 'Error en el servidor' } */
     deleteInstance
 );
 

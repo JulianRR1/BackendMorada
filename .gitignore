@@ -23,6 +23,8 @@ dist/
 build/
 .cache/
 tmp/
+utils/proxy-*.js
+utils/appmoradaproxy-347269d09577.json
 
 # OS/Editor
 .DS_Store
