@@ -1,7 +1,7 @@
 import express from "express";
 import { getAllLines, getByName, createLine, updateLine, deleteLine } from "../controllers/line.controller.js";
 const router = express.Router();
-import { verifyToken } from "../middleware/auth.js"; // Ensure to import the verifyToken middleware
+import { verifyToken, requireAdmin } from "../middleware/auth.js"; // Ensure to import the verifyToken middleware
 
 /* #swagger.tags = [{ name: 'LineLSM', description: 'Directorio de líneas de apoyo por estado y municipio' }] */
 
@@ -49,7 +49,7 @@ router.get(
 router.post(
     "/", 
     verifyToken,
-    /* #swagger.tags = ['Line'] */
+    requireAdmin,    /* #swagger.tags = ['Line'] */
     /* #swagger.summary = 'Crear una nueva línea de apoyo' */
     /* #swagger.description = 'Endpoint para crear una nueva línea de apoyo. Requiere autenticación.' */
     /* #swagger.security = [{ "bearerAuth": [] }] */
@@ -74,7 +74,7 @@ router.post(
 router.put(
     "/:id", 
     verifyToken,
-    /* #swagger.tags = ['Line'] */
+    requireAdmin,    /* #swagger.tags = ['Line'] */
     /* #swagger.summary = 'Actualizar línea de apoyo por ID' */
     /* #swagger.description = 'Endpoint para actualizar una línea de apoyo existente mediante su ID. Requiere autenticación.' */
     /* #swagger.security = [{ "bearerAuth": [] }] */
@@ -102,8 +102,8 @@ router.put(
 */
 router.delete(
     "/:id", 
-    verifyToken, 
-    /* #swagger.tags = ['Line'] */
+    verifyToken,
+    requireAdmin,    /* #swagger.tags = ['Line'] */
     /* #swagger.summary = 'Eliminar línea de apoyo por ID' */
     /* #swagger.description = 'Endpoint para eliminar una línea de apoyo existente mediante su ID. Requiere autenticación.' */
     /* #swagger.security = [{ "bearerAuth": [] }] */

@@ -1,0 +1,5 @@
+# Decisión explícita sobre los build scripts (postinstall) de dependencias.
+# @scarf/scarf es telemetría; lo RECHAZAMOS (false) a propósito.
+# Sin esta decisión, pnpm sale con código 1 y rompe `pnpm install` / `pnpm run dev`.
+allowBuilds:
+  '@scarf/scarf': false

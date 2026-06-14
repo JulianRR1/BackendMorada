@@ -1,7 +1,7 @@
 import express from "express";
 import { getAllInformation, getInformationById, createInformation, updateInformation, deleteInformation } from "../controllers/information.controller.js";
 const router = express.Router();
-import { verifyToken } from "../middleware/auth.js"; // Ensure to import the verifyToken middleware
+import { verifyToken, requireAdmin } from "../middleware/auth.js"; // Ensure to import the verifyToken middleware
 
 /* #swagger.tag = [{ name: 'Information', description: 'Informacion de apoyo en temas de violencia'}]*/
 
@@ -49,7 +49,7 @@ router.get(
 router.post(
     "/",
     verifyToken,
-    /* #swagger.tags = ['Information'] */
+    requireAdmin,    /* #swagger.tags = ['Information'] */
     /* #swagger.summary = 'Crear informacion de apoyo' */
     /* #swagger.description = 'Endpoint para crear una nueva información de apoyo. Requiere autenticación.' */
     /* #swagger.security = [{ "bearerAuth": [] }] */
@@ -74,7 +74,7 @@ router.post(
 router.put(
     "/:id",
     verifyToken,
-    /* #swagger.tags = ['Information'] */
+    requireAdmin,    /* #swagger.tags = ['Information'] */
     /* #swagger.summary = 'Actualizar información de apoyo existente' */
     /* #swagger.description = 'Endpoint para actualizar una información de apoyo existente por su ID. Requiere autenticación.' */
     /* #swagger.parameters['id'] = {
@@ -102,8 +102,8 @@ router.put(
 */
 router.delete(
     "/:id", 
-    verifyToken, 
-    /* #swagger.tags = ['Information'] */
+    verifyToken,
+    requireAdmin,    /* #swagger.tags = ['Information'] */
     /* #swagger.summary = 'Eliminar información de apoyo por ID' */
     /* #swagger.description = 'Endpoint para eliminar una información de apoyo específica mediante su ID. Requiere autenticación.' */
     /* #swagger.security = [{ "bearerAuth": [] }] */

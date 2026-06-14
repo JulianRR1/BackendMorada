@@ -32,10 +32,32 @@ export const loginAdmin = async (req, res) => {
   }
 };
 
+// Reemite un JWT nuevo a partir del actual (válido). Requiere verifyToken,
+// que rechaza tokens ya expirados; por eso el cliente debe refrescar ANTES de
+// que expire (ver SessionTimeout en el dashboard).
+export const refreshToken = async (req, res) => {
+  try {
+    const { id, email, role } = req.user;
+    const token = jwt.sign(
+      { id, email, role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+    res.json({ token });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error en el servidor" });
+  }
+};
+
 export const registerUser = async (req, res) => {
   const { name, email, password, rol, role } = req.body;
   const emailNorm = (email || "").trim().toLowerCase();
-  const roleFinal = (role || rol || "USER").toUpperCase();
+
+  // El rol solo es asignable porque esta ruta exige token de ADMIN (ver auth.routes.js).
+  // Se valida contra el enum permitido; cualquier valor inválido cae a USER.
+  const requested = (role || rol || "USER").toUpperCase();
+  const roleFinal = ["USER", "ADMIN"].includes(requested) ? requested : "USER";
 
   try {
     // Verifica si ya existe el correo

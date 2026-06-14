@@ -1,7 +1,7 @@
 import express from "express";
 import { getAllResponses, getResponseById, createResponse, updateResponse, deleteResponse } from "../controllers/response.controller.js";
 const router = express.Router();
-import { verifyToken } from "../middleware/auth.js"; // Ensure to import the verifyToken middleware
+import { verifyToken, requireAdmin } from "../middleware/auth.js"; // Ensure to import the verifyToken middleware
 
 /* #swagger.tags = [{ name: 'Response', description: 'Manejo de respuestas y seguimientos de casos' }] */
 
@@ -49,7 +49,7 @@ router.get(
 router.post(
     "/", 
     verifyToken,
-    /* #swagger.tags = ['Response'] */
+    requireAdmin,    /* #swagger.tags = ['Response'] */
     /* #swagger.summary = 'Crear una nueva respuesta' */
     /* #swagger.description = 'Endpoint para crear una nueva respuesta. Requiere autenticación.' */
     /* #swagger.security = [{ "bearerAuth": [] }] */
@@ -75,7 +75,7 @@ router.post(
 router.put(
     "/:id", 
     verifyToken,
-    /* #swagger.tags = ['Response'] */
+    requireAdmin,    /* #swagger.tags = ['Response'] */
     /* #swagger.summary = 'Actualizar una respuesta existente' */
     /* #swagger.description = 'Endpoint para actualizar una respuesta existente por su ID. Requiere autenticación.' */
     /* #swagger.security = [{ "bearerAuth": [] }] */
@@ -104,7 +104,7 @@ router.put(
 router.delete(
     "/:id", 
     verifyToken,
-    /* #swagger.tags = ['Response'] */
+    requireAdmin,    /* #swagger.tags = ['Response'] */
     /* #swagger.summary = 'Eliminar una respuesta por ID' */
     /* #swagger.description = 'Endpoint para eliminar una respuesta existente mediante su ID. Requiere autenticación.' */
     /* #swagger.security = [{ "bearerAuth": [] }] */

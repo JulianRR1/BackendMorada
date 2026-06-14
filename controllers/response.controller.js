@@ -37,7 +37,7 @@ export const createResponse = async (req, res) => {
 export const updateResponse = async (req, res) => {
     const { id } = req.params;
     try {
-        const updatedResponse = await Response.findByIdAndUpdate(id, req.body, { new: true });
+        const updatedResponse = await Response.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
         if (!updatedResponse) {
             return res.status(404).json({ message: "Response not found" });
         }

@@ -30,8 +30,8 @@ export const getSurveyByPartPhase = async (req, res) => {
         const filter = {};
         if (part) filter.part = part;
         if (phase) filter.phase = phase;
-        const surveys = await Survey.find(filter);
-        res.status(200).json(decorateSurveyDoc(surveys));
+        const surveys = await Survey.find(filter).lean();
+        res.status(200).json(surveys.map(decorateSurveyDoc));
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -50,7 +50,7 @@ export const createSurvey = async (req, res) => {
 export const updateSurvey = async (req, res) => {
     const { id } = req.params;
     try {
-        const updatedSurvey = await Survey.findByIdAndUpdate(id, req.body, { new: true });
+        const updatedSurvey = await Survey.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
         if (!updatedSurvey) {
             return res.status(404).json({ message: "Survey not found" });
         }

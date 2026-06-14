@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import { getAllInstances, getInstanceById, getInformationByStateMunicipality, createInstance, updateInstance, deleteInstance } from "../controllers/instance.controller.js";
 const router = express.Router();
-import { verifyToken } from "../middleware/auth.js"; // Ensure to import the verifyToken middleware
+import { verifyToken, requireAdmin } from "../middleware/auth.js"; // Ensure to import the verifyToken middleware
 
 /* #swagger.tag = [{ name: 'Instance', description: 'Instancias/Organizaciones fisicas de apoyo a muejeres' }] */
 
@@ -99,7 +99,7 @@ router.get(
 router.post(
     "/",
     verifyToken,
-    /* #swagger.tags = ['Instance'] */
+    requireAdmin,    /* #swagger.tags = ['Instance'] */
     /* #swagger.summary = 'Crear una nueva instancia' */
     /* #swagger.description = 'Endpoint para crear una nueva instancia. Requiere autenticación.' */
     /* #swagger.security = [{ "bearerAuth": [] }] */
@@ -124,7 +124,7 @@ router.post(
 router.put(
     "/:id",
     verifyToken,
-    /* #swagger.tags = ['Instance'] */
+    requireAdmin,    /* #swagger.tags = ['Instance'] */
     /* #swagger.summary = 'Actualizar una instancia por ID' */
     /* #swagger.description = 'Endpoint para actualizar una instancia existente mediante su ID. Requiere autenticación.' */
     /* #swagger.security = [{ "bearerAuth": [] }] */
@@ -152,7 +152,7 @@ router.put(
 router.delete(
     "/:id",
     verifyToken,
-    /* #swagger.tags = ['Instance'] */
+    requireAdmin,    /* #swagger.tags = ['Instance'] */
     /* #swagger.summary = 'Eliminar una instancia por ID' */
     /* #swagger.description = 'Endpoint para eliminar una instancia existente mediante su ID. Requiere autenticación.' */
     /* #swagger.security = [{ "bearerAuth": [] }] */

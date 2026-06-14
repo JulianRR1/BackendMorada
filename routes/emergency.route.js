@@ -1,7 +1,7 @@
 import express from "express";
 import { getAllEmergency, getByEstadoMunicipio, createEmergency, updateEmergency, deleteEmergency } from "../controllers/emergency.controller.js";
 const router = express.Router();
-import { verifyToken } from "../middleware/auth.js"; // Ensure to import the verifyToken middleware
+import { verifyToken, requireAdmin } from "../middleware/auth.js"; // Ensure to import the verifyToken middleware
 
 /* #swagger.tags = [{ name: 'Emergency', description: 'Directorio de líneas de emergencia por estado y municipio' }] */
 
@@ -53,7 +53,7 @@ router.get(
 router.post(
     "/",
     verifyToken,
-    /* #swagger.tags = ['Emergency'] */
+    requireAdmin,    /* #swagger.tags = ['Emergency'] */
     /* #swagger.summary = 'Crear una nueva línea de emergencia' */
     /* #swagger.description = 'Endpoint para crear una nueva línea de emergencia. Requiere autenticación.' */
     /* #swagger.security = [{ "bearerAuth": [] }] */
@@ -79,7 +79,7 @@ router.post(
 router.put(
     "/:id", 
     verifyToken,
-    /* #swagger.tags = ['Emergency'] */
+    requireAdmin,    /* #swagger.tags = ['Emergency'] */
     /* #swagger.summary = 'Actualizar una línea de emergencia existente' */
     /* #swagger.description = 'Endpoint para actualizar una línea de emergencia existente por su ID. Requiere autenticación.' */
     /* #swagger.security = [{ "bearerAuth": [] }] */
@@ -108,8 +108,8 @@ router.put(
 */
 router.delete(
     "/:id", 
-    verifyToken, 
-    /* #swagger.tags = ['Emergency'] */
+    verifyToken,
+    requireAdmin,    /* #swagger.tags = ['Emergency'] */
     /* #swagger.summary = 'Eliminar una línea de emergencia' */
     /* #swagger.description = 'Endpoint para eliminar una línea de emergencia por su ID. Requiere autenticación.' */
     /* #swagger.security = [{ "bearerAuth": [] }] */

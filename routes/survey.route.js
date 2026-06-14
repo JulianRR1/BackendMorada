@@ -1,7 +1,7 @@
 import express from "express";
 import { getAllSurveys, getSurveyById, getSurveyByPartPhase, createSurvey, updateSurvey, deleteSurvey } from "../controllers/survey.controller.js";
 const router = express.Router();
-import { verifyToken } from "../middleware/auth.js"; // Ensure to import the verifyToken middleware
+import { verifyToken, requireAdmin } from "../middleware/auth.js"; // Ensure to import the verifyToken middleware
 
 /* #swagger.tags = [{ name: 'Survey', description: 'Gestión de encuestas y recopilación de datos' }] */
 
@@ -72,8 +72,8 @@ router.get(
 */
 router.post(
     "/", 
-    verifyToken, 
-    /* #swagger.tags = ['Survey'] */
+    verifyToken,
+    requireAdmin,    /* #swagger.tags = ['Survey'] */
     /* #swagger.summary = 'Crear una nueva encuesta' */
     /* #swagger.description = 'Endpoint para crear una nueva encuesta. Requiere autenticación.' */
     /* #swagger.security = [{ "bearerAuth": [] }] */
@@ -97,8 +97,8 @@ router.post(
 */
 router.put(
     "/:id", 
-    verifyToken, 
-    /* #swagger.tags = ['Survey'] */
+    verifyToken,
+    requireAdmin,    /* #swagger.tags = ['Survey'] */
     /* #swagger.summary = 'Actualizar encuesta por ID' */
     /* #swagger.description = 'Endpoint para actualizar una encuesta existente mediante su ID. Requiere autenticación.' */
     /* #swagger.security = [{ "bearerAuth": [] }] */
@@ -127,7 +127,7 @@ router.put(
 router.delete(
     "/:id", 
     verifyToken,
-    /* #swagger.tags = ['Survey'] */
+    requireAdmin,    /* #swagger.tags = ['Survey'] */
     /* #swagger.summary = 'Eliminar encuesta por ID' */
     /* #swagger.description = 'Endpoint para eliminar una encuesta existente mediante su ID. Requiere autenticación.' */
     /* #swagger.security = [{ "bearerAuth": [] }] */

@@ -1,5 +1,9 @@
 import LineLSM from "../models/LineLSM.js";
 
+// Escapa metacaracteres de regex para evitar inyección NoSQL / ReDoS al
+// construir un $regex con entrada del usuario.
+const escapeRegExp = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 export const getAllLines = async (req, res) => {
     try {
         const lines = await LineLSM.find().lean();
@@ -14,7 +18,7 @@ export const getByName = async (req, res) => {
     try {
         const filter = {};
         if (name) {
-            filter.name = { $regex: name, $options: 'i' };
+            filter.name = { $regex: escapeRegExp(name), $options: 'i' };
         }
         const lines = await LineLSM.find(filter).lean();
         if (lines.length === 0) {

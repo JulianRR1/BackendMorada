@@ -9,9 +9,17 @@ const auth = new google.auth.GoogleAuth({
 const drive = google.drive({ version: "v3", auth });
 
 
+// Los IDs de Google Drive son alfanuméricos con guiones/guiones bajos.
+// Validar el formato evita pasar entrada arbitraria a la API (mitiga SSRF).
+const VALID_FILE_ID = /^[A-Za-z0-9_-]{10,}$/;
+
 export async function getDriveMedia(req, res) {
   const { fileId } = req.params;
   const range = req.headers.range;
+
+  if (!VALID_FILE_ID.test(fileId)) {
+    return res.status(400).json({ error: "fileId inválido" });
+  }
 
   try {
     // 1) Metadatos: tamaño, tipo y checksum para cabeceras correctas
@@ -73,8 +81,8 @@ export async function getDriveMedia(req, res) {
 
     dl.data.pipe(res);
   } catch (e) {
-    // 403 (permisos), 404 (no existe), o cuotas
+    // Log interno detallado, pero respuesta genérica para no filtrar detalles del upstream.
     console.error("Drive proxy error:", e?.response?.data || e.message);
-    res.status(502).json({ error: "Upstream Drive error" });
+    if (!res.headersSent) res.status(502).json({ error: "No se pudo obtener el archivo" });
   }
 }

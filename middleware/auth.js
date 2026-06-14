@@ -22,3 +22,12 @@ export const verifyToken = (req, res, next) => {
   }
 };
 
+// Exige que el usuario autenticado tenga rol ADMIN.
+// Debe usarse SIEMPRE después de verifyToken (que rellena req.user).
+export const requireAdmin = (req, res, next) => {
+  if (req.user?.role !== "ADMIN") {
+    return res.status(403).json({ message: "Acceso restringido a administradores" });
+  }
+  next();
+};
+

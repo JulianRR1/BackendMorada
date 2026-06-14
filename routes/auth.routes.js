@@ -1,12 +1,24 @@
 import express from "express";
-import { loginAdmin, registerUser } from "../controllers/auth.controller.js";
+import rateLimit from "express-rate-limit";
+import { loginAdmin, registerUser, refreshToken } from "../controllers/auth.controller.js";
+import { verifyToken, requireAdmin } from "../middleware/auth.js";
 const router = express.Router();
+
+// Rate-limit agresivo contra fuerza bruta en endpoints de autenticación.
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 min
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: "Demasiados intentos. Intenta de nuevo más tarde." },
+});
 
 /* #swagger.tags = [{ name: 'Auth', description: 'Autenticación y registro dentro del dashboard ADMIN' }] */
 /* #swagger.path = '/auth' */
 
 router.post(
     "/admin/login",
+    authLimiter,
     /* #swagger.tags = ['Auth'] */
     /* #swagger.summary = 'Iniciar sesión como administrador' */
     /* #swagger.description = 'Endpoint para que los administradores inicien sesión y obtengan un token JWT.' */
@@ -26,6 +38,9 @@ router.post(
 );
 router.post(
     "/register",
+    authLimiter,
+    verifyToken,
+    requireAdmin,
     /* #swagger.tags = ['Auth'] */
     /* #swagger.summary = 'Registrar un nuevo usuario' */
     /* #swagger.description = 'Endpoint para registrar un nuevo usuario con rol USER o ADMIN.' */
@@ -43,6 +58,17 @@ router.post(
     /* #swagger.responses[409] = { description: 'Duplicado (si lo manejas con 409)' } */
     /* #swagger.responses[500] = { description: 'Error en el servidor' } */
     registerUser
+);
+
+router.post(
+    "/refresh",
+    authLimiter,
+    verifyToken,
+    /* #swagger.tags = ['Auth'] */
+    /* #swagger.summary = 'Renovar el token JWT' */
+    /* #swagger.description = 'Reemite un token válido por 1h. Requiere un token aún no expirado.' */
+    /* #swagger.security = [{ "bearerAuth": [] }] */
+    refreshToken
 );
 
 export default router;
