@@ -74,7 +74,9 @@ const doc = {
             },
             LineLSM: {
                 number: "1234567890",
-                name: "Línea de ayuda"
+                name: "Línea de ayuda",
+                state: "Jalisco",
+                municipality: "Guadalajara"
             },
             Response: {
                 phase: "antes",
