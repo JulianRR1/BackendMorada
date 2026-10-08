@@ -1,5 +1,7 @@
 # deps
 node_modules/
+.pnpm-store/
+
 
 # env & secrets
 .env

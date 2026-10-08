@@ -6,13 +6,10 @@
   "author": "",
   "type": "module",
   "main": "app.js",
-  "packageManager": "pnpm@11.5.3",
   "engines": {
-    "node": ">=18",
-    "pnpm": ">=11"
+    "node": ">=18"
   },
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prestart": "node doc/swagger.js",

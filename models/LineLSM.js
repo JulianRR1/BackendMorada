@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 const LineLSMSchema = new mongoose.Schema({
     number: { type: String, required: true, trim: true, unique: true },
     name: { type: String, required: true, trim: true },
+    state: { type: String, required: true, trim: true },
+    municipality: { type: String, required: true, trim: true }
 }, { timestamps: true });
 
 
